@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { useEffect, useState } from "react";
 
-function App() {
+function Clock() {
+  let [time, setTime] = useState(new Date());
+  let [isVisible, setVisibility] = useState(true);
+
+  useEffect(() => {
+    const intervalRef = setInterval(() => {
+      if (isVisible === true) {
+        setTime(new Date());
+        console.log(time);
+      }
+    }, 1000);
+
+    return function clear() {
+      clearInterval(intervalRef);
+    };
+  });
+
+  let clock;
+  let button = <button onClick={() => setVisibility(false)}>Disappear!</button>;
+
+  if (isVisible === false) {
+    clock = null;
+    button = <button onClick={() => setVisibility(true)}>Appear!</button>;
+  } else {
+    clock = <h2>It is {time.toLocaleTimeString()}</h2>;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {clock}
+      {button}
     </div>
   );
 }
 
-export default App;
+export default Clock;
